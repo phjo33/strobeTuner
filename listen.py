@@ -20,7 +20,7 @@ class Listen(QThread):
 
     def run(self):
         with sd.InputStream(samplerate=44100, channels=1, blocksize=512, \
-                       device=0, callback=self.callback):
+                    callback=self.callback):
             while True:
                 sleep(1)
 

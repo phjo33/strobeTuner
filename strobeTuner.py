@@ -1,6 +1,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5 import QtCore
+from PyQt5.QtCore import QEvent
+from PyQt5.QtGui import QKeyEvent
 import numpy as np
 from mainWindowUi import Ui_Form
 from temperaments import temperaments, noteNames
@@ -17,6 +19,8 @@ class Window(QWidget):
         self.ui.temperamentComboBox.setCurrentIndex(0)
         self.ui.temperamentComboBox.currentTextChanged.connect(self.setTemp)
         self.ui.noteComboBox.currentIndexChanged.connect(self.setNote)
+        self.ui.noteComboBox.installEventFilter(self)
+        self.ui.temperamentComboBox.installEventFilter(self)
         self.currentNote=69
         self.thread = Listen()
         self.setPitch(440.0)
@@ -24,30 +28,36 @@ class Window(QWidget):
         self.thread.sig.connect(self.ui.strobeWidget.refresh)
         self.thread.start()
 
-    def keyPressEvent(self, event):
-        if event.key() == QtCore.Qt.Key_Left:
-            self.currentNote -= 1
-            if self.currentNote < 12: # not tested for so low frequencies but...
-                self.currentNote = 12
+    def eventFilter(self, source, event):
+        if event.type() == QEvent.KeyPress:
+            if event.key() == QtCore.Qt.Key_Left:
+                self.currentNote -= 1
+                if self.currentNote < 12:  # not tested for so low frequencies but...
+                    self.currentNote = 12
 
-            self.ui.noteComboBox.setCurrentIndex(self.currentNote)
-            self.ui.noteComboBox.update()
-            self.thread.freq = self.frequencies[self.currentNote]
+                self.ui.noteComboBox.setCurrentIndex(self.currentNote)
+                self.ui.noteComboBox.update()
+                self.thread.freq = self.frequencies[self.currentNote]
 
-        if event.key() == QtCore.Qt.Key_Right:
-            self.currentNote += 1
-            if self.currentNote > 100: # a quite arbitrary limit
-                self.currentNote = 100
+            if event.key() == QtCore.Qt.Key_Right:
+                self.currentNote += 1
+                if self.currentNote > 100:  # a quite arbitrary limit
+                    self.currentNote = 100
 
-            self.ui.noteComboBox.setCurrentIndex(self.currentNote)
-            self.ui.noteComboBox.update()
-            self.thread.freq = self.frequencies[self.currentNote]
+                self.ui.noteComboBox.setCurrentIndex(self.currentNote)
+                self.ui.noteComboBox.update()
+                self.thread.freq = self.frequencies[self.currentNote]
 
-        if event.key() == QtCore.Qt.Key_Up:
-            self.setPitch(self.pitch+1)
+            if event.key() == QtCore.Qt.Key_Up:
+                self.setPitch(self.pitch + 1)
 
-        if event.key() == QtCore.Qt.Key_Down:
-            self.setPitch(self.pitch-1)
+            if event.key() == QtCore.Qt.Key_Down:
+                self.setPitch(self.pitch - 1)
+
+            return True
+        else:
+            return False
+
 
     @QtCore.pyqtSlot(str)
     def setTemp(self, temp):
