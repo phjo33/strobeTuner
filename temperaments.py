@@ -35,6 +35,7 @@ def equal():
 
 
 def valotti5th():
+    # the six quints are shortened by a 5th of syntonic comma
     octave4 = [262.6914355, 277.0573737, 294.0630272, 312.1124797, 329.1811314, 351.1265398, \
                369.4098316, 393.0593816, 415.5860606, 440.0, 468.1687196, 492.5464421]
     freqs = []
@@ -45,7 +46,8 @@ def valotti5th():
 
 
 def valotti4th():
-    octave4 = [263.1813856, 276.7134122, 294.2457342, 312.8888889, 328.9767320, 352.0000000,
+    # three pure thirds
+    octave4 = [263.1813856, 276.7134122, 294.2457342, 312.8888889, 328.9767320, 352.0000000, \
                368.9512163, 393.5479641, 415.0701183, 440.0, 469.3333333, 491.9349551]
     freqs = []
     for i in range(-1, 9):
@@ -55,19 +57,42 @@ def valotti4th():
 
 
 def valotti():
-    pass
+    # the six shortened quints are shortened with 1/6th of pythagorean comma here. No schisma
+    octave4 = [262.5133927, 277.1826308, 293.9965771, 311.8304596, 329.2555341, 350.8092676, \
+               369.5768411, 392.8817606, 415.7739462, 440, 467.7456894, 492.7691215]
+    freqs = []
+    for i in range(-1, 9):
+        for j in range(12):
+            freqs.append(octave4[j] * 2.0 ** (i - 4))
+    return freqs
 
 
 def meantone5th():
-    pass
+    octave4 = [262.6914355, 275.6840882, 294.0630272, 313.6672287, 329.1811314, 351.1265398, \
+               368.4931706, 393.0593816, 412.5000003, 440, 469.3333328, 492.5464421]
+    freqs = []
+    for i in range(-1, 9):
+        for j in range(12):
+            freqs.append(octave4[j] * 2.0 ** (i - 4))
+    return freqs
 
 
 def meantone6th():
-    pass
+    octave4 = [262.3653092, 276.1410920, 293.9412856, 312.8888885, 329.3174682, 350.5454376, \
+               368.9512164, 392.7339972, 413.3549332, 440, 468.3626210, 492.9545222]
+    freqs = []
+    for i in range(-1, 9):
+        for j in range(12):
+            freqs.append(octave4[j] * 2.0 ** (i - 4))
+    return freqs
 
 fillNames()
 temperaments['meantone'] = meantone()
+temperaments['meantone5th'] = meantone5th()
+temperaments['meantone6th'] = meantone6th()
 temperaments['equal'] = equal()
 temperaments['valotti5th'] = valotti5th()
 temperaments['valotti4th'] = valotti4th()
+temperaments['valotti'] = valotti()
+
 
