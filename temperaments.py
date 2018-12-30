@@ -9,7 +9,7 @@ noteNames = [] # will contain, in order, names of the notes.
 
 def fillNames():
     global noteNames
-    notes = ['C', 'C#', 'D', 'E#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     for octave in range(-1, 8):
         for i in range(12):
             noteNames.append(notes[i]+str(octave))

@@ -43,7 +43,6 @@ class strobeWindow(QWidget):
 
         painter.end()
 
-    @pyqtSlot(float, float, float)
     def refresh(self, y1, y2, y3):
         self.x1 += y1
         self.x1 %= 1.0
