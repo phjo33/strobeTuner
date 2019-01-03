@@ -34,10 +34,18 @@ class Listen(QThread):
         if self.automatic:
             fft = np.fft.rfft(self.data[frames * (self.current + 5): frames * (self.current + 9)] * self.hannWindowM,
                               n=4096)
-            bin = np.argmax(np.abs(fft[5:1000]))+5
+            bin = np.argmax(np.abs(fft[8:8000]))+8
+            if bin > 16:
+                bin2 = np.argmax(np.abs(fft[8:bin//2+2]))+8
+                if np.abs(fft[bin2]) > 100:
+                    bin = bin2
+            if np.abs(fft[bin]) < 50:
+                return
+
             phi = (np.angle(fft[bin]) - np.angle(self.previousFft[bin]) - (bin % 4) * np.pi / 2 + np.pi / 2) % np.pi - np.pi / 2
             freq = bin * 44100 / 4096 + phi / np.pi * 2 * 44100 / 4096
             fmax, note = 44100, 0
+            #print(freq, np.abs(fft[bin]))
             for i, f in enumerate(self.frequencies):
                 if np.abs(f - freq) < fmax:
                     fmax = np.abs(f - freq)

@@ -94,7 +94,7 @@ class Window(QWidget):
         temp = self.ui.temperamentComboBox.currentText()
         self.frequencies = np.array(temperaments[temp])*self.pitch / 440.0
         if self.automatic:
-            self.sigChangeTemp.emit(noteNames[24:80], list(self.frequencies[24:80]))
+            self.sigChangeTemp.emit(noteNames[24:88], list(self.frequencies[24:88]))
         else:
             self.sigChangeNote.emit(self.frequencies[self.currentNote])
 
